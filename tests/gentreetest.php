@@ -18,7 +18,7 @@ $outputFile = $argv[2];
 // Чтение данных из CSV файла
 $csvReader = new CsvReader($inputFile);
 $csvData = $csvReader->read();
-
+print_r($csvData);
 // Создание объектов TreeNode из данных CSV
 $treeNodes = [];
 foreach ($csvData as $row) {
