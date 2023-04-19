@@ -20,10 +20,16 @@ $csvReader = new CsvReader($inputFile);
 $csvData = $csvReader->read();
 
 // Создание объектов TreeNode из данных CSV
+// Создание объектов TreeNode из данных CSV
 $treeNodes = [];
 foreach ($csvData as $row) {
-    $treeNode = new TreeNode($row[0], $row[1], $row[2], $row[3]);
-    $treeNodes[] = $treeNode;
+    if (isset($row[0], $row[1], $row[2], $row[3])) {
+        $treeNode = new TreeNode($row[0], $row[1], $row[2], $row[3]);
+        $treeNodes[] = $treeNode;
+    } else {
+        echo "Ошибка: неправильный формат данных CSV.\n";
+        exit(1);
+    }
 }
 
 // Создание структуры дерева на основе объектов TreeNode
