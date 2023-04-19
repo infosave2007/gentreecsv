@@ -20,7 +20,6 @@ $csvReader = new CsvReader($inputFile);
 $csvData = $csvReader->read();
 
 // Создание объектов TreeNode из данных CSV
-// Создание объектов TreeNode из данных CSV
 $treeNodes = [];
 foreach ($csvData as $row) {
     if (isset($row[0], $row[1], $row[2], $row[3])) {
