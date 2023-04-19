@@ -11,7 +11,7 @@ git clone https://github.com/infosave2007/gentreecsv.git
 
 **Перейдите в каталог проекта:**
 
-cd gentree
+cd gentreecsv
 
 **Установите зависимости с помощью Composer:**
 
