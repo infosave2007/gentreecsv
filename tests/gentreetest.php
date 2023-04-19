@@ -2,41 +2,53 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Gentree\CsvReader;
 use Gentree\Gentree;
+use Gentree\TreeNode;
+use Gentree\CsvReader;
 
-// Проверяем количество аргументов командной строки
-if ($argc !== 3) {
-    echo "Использование: php gentreetest.php <input.csv> <output.json> \n";
+// Проверка аргументов командной строки
+if ($argc != 3) {
+    echo "Использование: php gentreetest.php <input.csv> <output.json>\n";
     exit(1);
 }
 
-// Загружаем входные параметры
 $inputFile = $argv[1];
 $outputFile = $argv[2];
 
-// Создаем объект CsvReader и читаем данные из файла
-$csvReader = new CsvReader($inputFile, ';', '"', 'UTF-8');
-$data = $csvReader->read();
+// Чтение данных из CSV файла
+$csvReader = new CsvReader($inputFile);
+$csvData = $csvReader->read();
 
-// Создаем объект Gentree и передаем ему данные
-$gentree = new Gentree($data);
-
-// Создаем исходное дерево из данных
-$tree = $gentree->createTree();
-
-// Расширяем дерево, добавляя связанные элементы
-$extendedTree = $gentree->extendTree($tree);
-
-// Преобразуем дерево в массив
-$resultArray = [];
-foreach ($extendedTree as $node) {
-    $resultArray[] = $node->toArray();
+// Создание объектов TreeNode из данных CSV
+$treeNodes = [];
+foreach ($csvData as $row) {
+    $treeNode = new TreeNode($row[0], $row[1], $row[2], $row[3]);
+    $treeNodes[] = $treeNode;
 }
 
-// Кодируем результат в JSON и сохраняем его в файл
-$jsonData = json_encode($resultArray, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-file_put_contents($outputFile, $jsonData);
+// Создание структуры дерева на основе объектов TreeNode
+$treeBuilder = new TreeBuilder($treeNodes);
+$tree = $treeBuilder->buildTree();
 
-// Выводим сообщение о успешном завершении
-echo "Дерево успешно сгенерировано и сохранено в файле {$outputFile}\n";
+// Преобразование дерева в массив
+$treeArray = [];
+foreach ($tree as $node) {
+    $treeArray[] = $node->toArray();
+}
+
+// Конвертирование массива в JSON
+$jsonOutput = json_encode($treeArray, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+
+// Сравнение результата с эталонным JSON-файлом
+$expectedJson = file_get_contents(__DIR__ . '/output.json');
+if ($jsonOutput === $expectedJson) {
+    echo "Тест успешно пройден.\n";
+} else {
+    echo "Тест не пройден. Результаты не совпадают.\n";
+}
+
+// Запись JSON в выходной файл
+file_put_contents($outputFile, $jsonOutput);
+
+echo "JSON успешно сохранен в файле {$outputFile}\n";
+?>
