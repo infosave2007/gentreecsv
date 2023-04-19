@@ -2,7 +2,7 @@
 
 namespace Gentree;
 
-class TreeNode
+class Gentree
 {
     private string $itemName;
     private ?string $parent;
