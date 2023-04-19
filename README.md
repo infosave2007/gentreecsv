@@ -7,7 +7,7 @@ Composer
 Установка
 Клонируйте репозиторий:
 
-git clone https://github.com/infosave2007/gentree.git
+git clone https://github.com/infosave2007/gentreecsv.git
 Перейдите в каталог проекта:
 
 cd gentree
