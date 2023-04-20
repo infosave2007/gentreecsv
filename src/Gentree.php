@@ -13,10 +13,10 @@ class Gentree
     // Конструктор с 4 аргументами
     public function __construct(string $itemName, ?string $parent, string $type, ?string $relation)
     {
-        $this->itemName = $itemName;
-        $this->parent = $parent;
-        $this->type = $type;
-        $this->relation = $relation;
+    $this->itemName = $itemName;
+    $this->parent = empty($parent) ? null : $parent;
+    $this->type = $type;
+    $this->relation = empty($relation) ? null : $relation;
     }
 
     public function getItemName(): string
@@ -44,7 +44,8 @@ class Gentree
         return $this->children;
     }
 
-    public function addChild(TreeNode $child): void
+    // Исправленный метод addChild
+    public function addChild(Gentree $child): void
     {
         $this->children[] = $child;
     }
@@ -64,8 +65,9 @@ class Gentree
 
         return [
             'itemName' => $this->itemName,
-            'parent' => $this->parent,
-            'children' => $childrenArray,
+            'parent' =>  empty($this->parent) ? null : $this->parent,
+            'children' => empty($childrenArray) ? [] : $childrenArray,
         ];
     }
 }
+
