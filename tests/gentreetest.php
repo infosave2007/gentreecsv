@@ -23,13 +23,26 @@ print_r($csvData);
 $treeNodes = [];
 foreach ($csvData as $row) {
     if (isset($row[0], $row[1], $row[2], $row[3])) {
-        $treeNode = new TreeNode($row[0], $row[1], $row[2], $row[3]);
+        $treeNode = new TreeNode([
+            'Item Name' => $row[0],
+            'Type' => $row[1],
+            'Parent' => $row[2],
+            'Relation' => $row[3]
+        ]);
         $treeNodes[] = $treeNode;
     } else {
         echo "Ошибка: неправильный формат данных CSV.\n";
         exit(1);
     }
 }
+В этом коде, я добавил цикл foreach, который проходит по каждой строке массива $csvData и преобразует ключи массива в нижний регистр с использованием функции array_change_key_case. Теперь ключи массива должны быть в нижнем регистре.
+
+
+
+
+
+
+
 
 // Создание структуры дерева на основе объектов TreeNode
 $treeBuilder = new TreeBuilder($treeNodes);
