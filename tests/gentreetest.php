@@ -18,31 +18,24 @@ $outputFile = $argv[2];
 // Чтение данных из CSV файла
 $csvReader = new CsvReader($inputFile);
 $csvData = $csvReader->read();
-print_r($csvData);
-// Создание объектов TreeNode из данных CSV
 $treeNodes = [];
 foreach ($csvData as $row) {
-    if (isset($row[0], $row[1], $row[2], $row[3])) {
-        $treeNode = new TreeNode([
-            'Item Name' => $row[0],
-            'Type' => $row[1],
-            'Parent' => $row[2],
-            'Relation' => $row[3]
-        ]);
+    if (is_array($row) && count($row) === 4) {
+        $treeNode = new TreeNode($row);
         $treeNodes[] = $treeNode;
     } else {
         echo "Ошибка: неправильный формат данных CSV.\n";
         exit(1);
     }
 }
-
+//print_r($treeNodes);
 // Создание структуры дерева на основе объектов TreeNode
-$treeBuilder = new TreeBuilder($treeNodes);
-$tree = $treeBuilder->buildTree();
+
+$treeRootNodes = TreeNode::buildTree($treeNodes);
 
 // Преобразование дерева в массив
 $treeArray = [];
-foreach ($tree as $node) {
+foreach ($treeRootNodes as $node) {
     $treeArray[] = $node->toArray();
 }
 
@@ -50,7 +43,7 @@ foreach ($tree as $node) {
 $jsonOutput = json_encode($treeArray, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 
 // Сравнение результата с эталонным JSON-файлом
-$expectedJson = file_get_contents(__DIR__ . '/output.json');
+$expectedJson = file_get_contents(__DIR__ . '/sample.json');
 if ($jsonOutput === $expectedJson) {
     echo "Тест успешно пройден.\n";
 } else {
