@@ -15,13 +15,13 @@ class TreeNode
     // Возвращает значение атрибута 'item name'
     public function getItemName(): string
     {
-        return $this->data['item name'];
+        return $this->data['Item Name'];
     }
 
     // Возвращает значение атрибута 'parent'
     public function getParent(): string
     {
-        return $this->data['parent'];
+        return $this->data['Parent'];
     }
 
     // Добавляет дочерний узел к текущему узлу
@@ -34,8 +34,8 @@ class TreeNode
     public function toArray(): array
     {
         $result = [
-            'itemName' => $this->data['item name'],
-            'parent' => $this->data['parent'],
+            'itemName' => $this->data['Item Name'],
+            'parent' => $this->data['Parent'],
         ];
         if (!empty($this->children)) {
             $result['children'] = array_map(function ($child) {
