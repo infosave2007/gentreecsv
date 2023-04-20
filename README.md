@@ -20,7 +20,10 @@ composer install
 **Использование**
 Чтобы запустить программу, выполните следующую команду:
 
+cd tests
+
 php gentreetest.php input.csv output.json
+
 где input.csv - путь к входному файлу в формате CSV, а output.json - путь для сохранения выходного JSON файла.
 
 Автор
