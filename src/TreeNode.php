@@ -35,7 +35,8 @@ class TreeNode
     {
         $result = [
             'itemName' => $this->data['Item Name'],
-            'parent' => $this->data['Parent'],
+            'parent' => empty($this->data['Parent']) ? null:$this->data['Parent'],
+            'children' => [],
         ];
         if (!empty($this->children)) {
             $result['children'] = array_map(function ($child) {
@@ -44,4 +45,29 @@ class TreeNode
         }
         return $result;
     }
+    public static function buildTree(array $nodes): array
+{
+    $tree = [];
+    $nodesById = [];
+
+    // Создание массива узлов с индексом по item name
+    foreach ($nodes as $node) {
+        $nodesById[$node->getItemName()] = $node;
+    }
+
+    // Добавление дочерних узлов к родительским узлам и формирование иерархии
+    foreach ($nodes as $node) {
+        $parentName = $node->getParent();
+        if ($parentName != null) {
+            if (isset($nodesById[$parentName])) {
+                $nodesById[$parentName]->addChild($node);
+            }
+        } else {
+            $tree[] = $node;
+        }
+    }
+
+    return $tree;
 }
+}
+
